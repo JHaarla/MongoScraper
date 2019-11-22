@@ -20,7 +20,7 @@ mongoose.connect("mongodb://localhost/MongoScraper", { useNewUrlParser: true });
 
 //ROUTES
 //===============
-// GET route to scrape the site
+// GET route to scrape the site and write to the database
 app.get("/scrape", function (req, res) {
     //grabs the HTML from the specified site
     axios.get("https://www.nytimes.com/").then(function (siteHTML) {
@@ -50,7 +50,17 @@ app.get("/scrape", function (req, res) {
     })
 })
 
+// GET route to retrieve articles from the database 
+app.get("/articles", function (req, res) {
 
+    db.Article.find({})
+    .then(function(dbArticles) {
+        res.json(dbArticles);
+    })
+    .catch(function(err) {
+        res.json(err);
+    });
+});
 
 
 
