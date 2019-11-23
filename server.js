@@ -23,18 +23,24 @@ app.use(logger("dev"));
 mongoose.connect("mongodb://localhost/MongoScraper", { useNewUrlParser: true });
 
 //handlebars setup
-app.engine("handlebars", exphbs({ defaultLayout: "main"}));
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 //ROUTES
 //===============
 app.get("/", function (err, result) {
+
     db.Article.find({})
-    .then(function (DBArticle) {
-        result.render("index", { articles: DBArticle});
-    }).catch(function (err) {
-        result.json(err);
-    });
+        .then(function (DBArticle) {
+            console.log(DBArticle.length);
+            if (DBArticle.length != 0) {
+                result.render("index", { articles: DBArticle });
+            } else {
+                result.render("noarticles");
+            }
+        }).catch(function (err) {
+            result.json(err);
+        });
 });
 
 // GET route to scrape the site and write to the database
@@ -46,23 +52,48 @@ app.get("/scrape", function (req, res) {
         // load the siteHTML into cheerio, set $ as shorthand for ease of use    
         const $ = cheerio.load(siteHTML.data);
 
-        $(".c-entry-box--compact__title").each(function (i, element) {
+        // $(".c-entry-box--compact__title").each(function (i, element) {
+        //     const article = {};
+
+        //     article.title = $(this)
+        //         .children("a")
+        //         .text();
+        //     article.link = $(this)
+        //         .children("a")
+        //         .attr("href");
+
+
+        $(".c-compact-river__entry ").each(function (i, element) {
             const article = {};
 
             article.title = $(this)
+                .children("div.c-entry-box--compact")
+                .children("div.c-entry-box--compact__body")
+                .children("h2.c-entry-box--compact__title")
                 .children("a")
                 .text();
             article.link = $(this)
+                .children("div.c-entry-box--compact")
                 .children("a")
                 .attr("href");
+            article.image = $(this)
+                .children("div.c-entry-box--compact")
+                .children("a")
+                .children("div.c-entry-box--compact__image")
+                .children("img")
+                .attr("src");
+                // .children("noscript")
+                // .text()
+
+
 
             //create new article from scraped data with the article object
             db.Article.create(article)
-            .then(function (DBArticle) {
-                console.log(DBArticle);
-            }).catch(function (err) {
-                console.log(err);
-            });
+                .then(function (DBArticle) {
+                    console.log(DBArticle);
+                }).catch(function (err) {
+                    console.log(err);
+                });
         });
         res.redirect("/");
     })
@@ -107,12 +138,12 @@ app.get("/scrape", function (req, res) {
 app.get("/articles", function (req, res) {
 
     db.Article.find({})
-    .then(function(DBArticles) {
-        res.json(DBArticles);
-    })
-    .catch(function(err) {
-        res.json(err);
-    });
+        .then(function (DBArticles) {
+            res.json(DBArticles);
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
 });
 
 // catch-all route for anything not defined above
@@ -121,7 +152,7 @@ app.get("/articles", function (req, res) {
 // });
 
 app.get("/clear-all", function (req, res) {
-    db.Article.remove({}, function(err, doc){
+    db.Article.remove({}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {

@@ -36,15 +36,30 @@
     </div>
 </div>
 
+
 <div class="container-fluid article-container">
-    {{#each articles}} {{#unless this.saved}}
-    <div class="card">
-        <div class="card-header">
-            <h5>
-                <a class="article-link" target="_blank" rel="noopener noreferrer" href={{this.link}}>{{this.title}}</a>
-                <a class="btn btn-success float-right save-btn">Save Article</a>
-            </h5>
-        </div>
+    <div class="alert alert-warning text-center">
+        <h5>You don't have any scraped articles...</h5>
     </div>
-    {{/unless}} {{/each}}
+
+    <div class="card">
+        <div class="card-header text-center">
+            <div>
+                <a href="/scrape"><button class="btn btn-primary">Scrape for New
+                        Articles</button></a>
+                <p>This may take a few seconds...</p>
+                <a href="/saved"><button class="btn btn-primary">View Saved Articles</button></a>
+
+            </div>
+        </div>
+
+    </div>
 </div>
+
+<script>
+    $(document).on("click", ".scrape-new", scrapeForArticles);
+
+    function scrapeForArticles() {
+        $.get("/scrape");
+    }
+</script>
