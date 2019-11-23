@@ -1,0 +1,41 @@
+.jumbotron .background-image {
+    background-image: url("../../assets/img/news.jpg");
+    background-size: cover;
+    height: 100%;
+}
+
+.jumbotron .overlay {
+position: absolute;
+top: 0;
+bottom: 0;
+right: 0;
+left: 0;
+z-index: 2;
+background-color: rgba(0, 0, 0, 0.7);
+/* opacity: 0.7; */
+}
+
+.jumbotron {
+    padding: 0;
+    height:250px;
+    position: relative;
+    width: 100%;
+}
+
+.jumbotron .caption {
+    position: absolute;
+    top: 20%;
+    width: 100%;
+    text-align: center;
+    z-index: 3;
+}
+
+.jumbotron .caption h1 {
+    color: white;
+    /* z-index: 3; */
+}
+
+.jumbotron .caption p {
+    color: white;
+    /* z-index: 3; */
+}
