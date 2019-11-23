@@ -39,3 +39,7 @@ background-color: rgba(0, 0, 0, 0.7);
     color: white;
     /* z-index: 3; */
 }
+
+.my-btn {
+    margin-right: .5rem; 
+}
