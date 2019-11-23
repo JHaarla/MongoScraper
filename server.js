@@ -51,16 +51,12 @@ app.get("/scrape", function (req, res) {
 
             article.title = $(this)
                 .children("a")
-                // .children("span.balancedHeadline")
                 .text();
             article.link = $(this)
                 .children("a")
                 .attr("href");
-            // article.summary = $(this)
-            // .children("p").text();
 
             //create new article from scraped data with the article object
-            // db.Article.remove({})
             db.Article.create(article)
             .then(function (DBArticle) {
                 console.log(DBArticle);
