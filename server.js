@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
 const logger = require("morgan");
+const exphbs = require("express-handlebars");
 //express server setup/init
 const express = require("express");
 const app = express();
 const PORT = 5000;
+
+//set public folder as public root
+app.use(express.static("public"));
 
 //scraping tools
 const axios = require("axios");
@@ -18,8 +22,21 @@ app.use(logger("dev"));
 // connect to the Mongo DB
 mongoose.connect("mongodb://localhost/MongoScraper", { useNewUrlParser: true });
 
+//handlebars setup
+app.engine("handlebars", exphbs({ defaultLayout: "main"}));
+app.set("view engine", "handlebars");
+
 //ROUTES
 //===============
+app.get("/", function (err, result) {
+    db.Article.find({})
+    .then(function (DBArticle) {
+        result.render("index", { articles: DBArticle});
+    }).catch(function (err) {
+        result.json(err);
+    });
+});
+
 // GET route to scrape the site and write to the database
 app.get("/scrape", function (req, res) {
     //grabs the HTML from the specified site
@@ -34,11 +51,14 @@ app.get("/scrape", function (req, res) {
                 .children("div").children("h2")
                 // .children("span.balancedHeadline")
                 .text();
-            article.link = $(this)
+            article.link = "https://www.nytimes.com" + $(this)
                 // .children("a")
                 .attr("href");
+            article.summary = $(this)
+            .children("p").text();
 
             //create new article from scraped data with the article object
+            db.Article.remove({})
             db.Article.create(article)
             .then(function (DBArticle) {
                 console.log(DBArticle);
@@ -46,7 +66,7 @@ app.get("/scrape", function (req, res) {
                 console.log(err);
             });
         });
-        res.send("scrape completed successfully") //will send a different view via handlebars for succesful scrape
+        res.redirect("/");
     })
 })
 
@@ -54,15 +74,29 @@ app.get("/scrape", function (req, res) {
 app.get("/articles", function (req, res) {
 
     db.Article.find({})
-    .then(function(dbArticles) {
-        res.json(dbArticles);
+    .then(function(DBArticles) {
+        res.json(DBArticles);
     })
     .catch(function(err) {
         res.json(err);
     });
 });
 
+// catch-all route for anything not defined above
+// app.get("*", function (req, res) {
+//     res.render("404");
+// });
 
+app.get("/clear-all", function (req, res) {
+    db.Article.remove({}, function(err, doc){
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("removed all articles");
+        }
+    });
+    res.redirect("/");
+});
 
 
 
