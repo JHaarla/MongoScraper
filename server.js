@@ -33,7 +33,8 @@ app.get("/", function (err, result) {
     db.Article.find({})
         .then(function (DBArticle) {
             console.log(DBArticle.length);
-            if (DBArticle.length != 0) {
+            // console.log(DBArticle);
+            if (DBArticle.length !== 0) {
                 result.render("index", { articles: DBArticle });
             } else {
                 result.render("noarticles");
@@ -149,16 +150,16 @@ app.get("/articles", function (req, res) {
 //     res.render("404");
 // });
 
-// app.get("/clear-all", function (req, res) {
-//     db.Article.remove({}, function (err, doc) {
-//         if (err) {
-//             console.log(err);
-//         } else {
-//             console.log("removed all articles");
-//         }
-//     });
-//     res.redirect("/");
-// });
+app.get("/clear-everything", function (req, res) {
+    db.Article.remove({}, function (err, doc) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("removed all articles");
+        }
+    });
+    res.redirect("/");
+});
 
 app.get("/clear-all", function (req, res) {
     db.Article.deleteMany({"saved": false}, function (err, doc) {
@@ -171,13 +172,39 @@ app.get("/clear-all", function (req, res) {
     res.redirect("/");
 })
 
-app.put("/saved/:id", function (req, res) {
+app.post("/saved/:id", function (req, res) {
     db.Article.update( { _id: req.params.id }, { saved: true })
     .then(function(DBArticle) {
         console.log(DBArticle);
         // res.json(DBArticle);
     });
 })
+
+app.get("/saved", function (req, res){
+    db.Article.find({"saved": true})
+    .then(function(DBArt){
+        res.render("saved", { articles: DBArt});
+    }).catch(function(err) {
+        res.json(err);
+    })
+})
+
+
+app.post("/deleteone/:id", function (req, res) {
+    db.Article.deleteOne( { _id: req.params.id }, function (err, doc) {
+        if (err) {
+            console.log(err);
+        } else{
+            console.log("Deleted saved article");
+        }
+    });
+    // location.reload();
+    });
+
+
+
+
+
 
 //start express server
 app.listen(PORT, function () {
