@@ -63,7 +63,7 @@ app.get("/scrape", function (req, res) {
         //         .attr("href");
 
 
-        $(".c-compact-river__entry ").each(function (i, element) {
+        $(".c-compact-river__entry").each(function (i, element) {
             const article = {};
 
             article.title = $(this)
@@ -149,16 +149,35 @@ app.get("/articles", function (req, res) {
 //     res.render("404");
 // });
 
+// app.get("/clear-all", function (req, res) {
+//     db.Article.remove({}, function (err, doc) {
+//         if (err) {
+//             console.log(err);
+//         } else {
+//             console.log("removed all articles");
+//         }
+//     });
+//     res.redirect("/");
+// });
+
 app.get("/clear-all", function (req, res) {
-    db.Article.remove({}, function (err, doc) {
+    db.Article.deleteMany({"saved": false}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
-            console.log("removed all articles");
+            console.log("removed all except for saved articles");
         }
     });
     res.redirect("/");
-});
+})
+
+app.put("/saved/:id", function (req, res) {
+    db.Article.update( { _id: req.params.id }, { saved: true })
+    .then(function(DBArticle) {
+        console.log(DBArticle);
+        // res.json(DBArticle);
+    });
+})
 
 //start express server
 app.listen(PORT, function () {
