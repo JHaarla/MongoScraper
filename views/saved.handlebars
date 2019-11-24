@@ -33,6 +33,7 @@
     <div class="caption">
         <h1 class="title">Tech News</h1>
         <p class="subtitle">The Verge - scraped!</p>
+        <p class="subtitle">Your Saved Articles</p>
     </div>
 </div>
 
@@ -44,7 +45,8 @@
                 <a class="article-link" target="_blank" rel="noopener noreferrer" href={{this.link}}>{{this.title}}</a>
                 <a class="btn btn-danger float-right delete-btn btn-sm" data-id="{{this._id}}">Delete Article</a>
 
-                <a class="btn btn-success float-right comment-btn btn-sm my-btn" data-id="{{this._id}}">Comment</a>
+                <a id="modal-trigger" class="btn btn-success float-right comment-btn btn-sm my-btn" data-toggle="modal" data-id="{{this._id}}" href="#myModal">Comment</a>
+            
             </h5>
         </div>
     </div>

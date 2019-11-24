@@ -30,7 +30,7 @@ app.set("view engine", "handlebars");
 //===============
 app.get("/", function (err, result) {
 
-    db.Article.find({})
+    db.Article.find({"saved": false})
         .then(function (DBArticle) {
             console.log(DBArticle.length);
             // console.log(DBArticle);
@@ -183,7 +183,11 @@ app.post("/saved/:id", function (req, res) {
 app.get("/saved", function (req, res){
     db.Article.find({"saved": true})
     .then(function(DBArt){
-        res.render("saved", { articles: DBArt});
+        if (DBArt.length !== 0) {
+            res.render("saved", { articles: DBArt});
+        } else {
+            res.render("nosavedarts");
+        }
     }).catch(function(err) {
         res.json(err);
     })

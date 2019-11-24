@@ -35,3 +35,4 @@ $(".delete-btn").on("click", function (id) {
     })
     location.reload();
 })
+
