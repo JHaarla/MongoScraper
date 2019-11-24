@@ -76,21 +76,19 @@ app.get("/scrape", function (req, res) {
                 .children("div.c-entry-box--compact")
                 .children("a")
                 .attr("href");
-            article.image = $(this)
-                .children("div.c-entry-box--compact")
-                .children("a")
-                .children("div.c-entry-box--compact__image")
-                .children("img")
-                .attr("src");
-                // .children("noscript")
-                // .text()
-
+            // article.image = $(this)
+            //     .children("div.c-entry-box--compact")
+            //     .children("a")
+            //     .children("div.c-entry-box--compact__image")
+            //     .children("img")
+            //     .attr("src");
+            //     console.log("article image",article.image);
 
 
             //create new article from scraped data with the article object
             db.Article.create(article)
                 .then(function (DBArticle) {
-                    console.log(DBArticle);
+                    // console.log(DBArticle);
                 }).catch(function (err) {
                     console.log(err);
                 });
@@ -161,13 +159,6 @@ app.get("/clear-all", function (req, res) {
     });
     res.redirect("/");
 });
-
-
-
-
-
-
-
 
 //start express server
 app.listen(PORT, function () {

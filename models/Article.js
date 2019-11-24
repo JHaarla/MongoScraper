@@ -7,16 +7,16 @@ const Schema = mongoose.Schema;
 const ArticleSchema = new Schema({
     title: {
         type: String,
-        required: false
+        required: true
     },
     link: {
         type: String,
-        required: false
+        required: true
     },
-    image: {
-        type: String,
-        required: false
-    },
+    // image: {
+    //     type: String,
+    //     required: false
+    // },
     // `note` is an object that stores a Note id
     // The ref property links the ObjectId to the Note model
     // This allows us to populate the Article with an associated Note
