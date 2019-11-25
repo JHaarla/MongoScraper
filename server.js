@@ -173,7 +173,7 @@ app.get("/clear-all", function (req, res) {
 })
 
 app.post("/saved/:id", function (req, res) {
-    db.Article.update( { _id: req.params.id }, { saved: true })
+    db.Article.updateOne( { _id: req.params.id }, { saved: true })
     .then(function(DBArticle) {
         console.log(DBArticle);
         // res.json(DBArticle);
@@ -205,7 +205,16 @@ app.post("/deleteone/:id", function (req, res) {
     // location.reload();
     });
 
-
+app.get("/articles/:id", function (req, res) {
+    db.Article.findOne({ _id: req.params.id })
+    .populate("Comments")
+    .then(function (DBArt) {
+        res.json(DBArt);
+    })
+    .catch(function(err){
+        res.json(err);
+    });
+});
 
 
 
