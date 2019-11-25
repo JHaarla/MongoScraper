@@ -187,11 +187,9 @@ app.post("/arts/:id", function (req, res) {
         return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { comment: dbComment._id } }, { new: true });
     })
     // .then(function (dbArticle) {
-
     //     res.json(dbArticle);
     // })
     .catch(function (err) {
-
         res.json(err);
     });
 });
