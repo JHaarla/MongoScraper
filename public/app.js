@@ -61,12 +61,15 @@ $(document).on("click", "#save-comment-btn", function() {
     const id = $(this).attr("data-id");
     console.log(id);
     console.log("bodyinput: " + $("#bodyinput").val());
-
+    var commentText = $("#bodyinput").val();
+    console.log(commentText);
+    // $.ajax({
     axios({
         method: "POST",
         url: "/arts/" + id,
         data: {
-            body: $("#bodyinput").val()
+            body: commentText
+            // body: $("#bodyinput").val()
         }
     })
     .then(function(data){

@@ -186,18 +186,27 @@ app.post("/arts/:id", function (req, res) {
     db.Comment.create(req.body)
     .then(function (DBCom) {
         // console.log("DBCom: " + DBCom);
-        // return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { comment: DBCom._id } }, { new: true });
-        return db.Article.findOneAndUpdate({ _id: req.params.id }, { comment: DBCom._id }, { new: true });
+        return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { comment: DBCom._id } }, { new: true });
+        // return db.Article.findOneAndUpdate({ _id: req.params.id }, { comment: DBCom._id }, { new: true });
     })
-    // .then(function (dbArticle) {
-    //     res.json(dbArticle);
-    // })
+    .then(function (dbArticle) {
+        res.json(dbArticle);
+    })
     .catch(function (err) {
         res.json(err);
     });
 });
 
 //comments route here
+app.get("/comments/:id", function (req, res) {
+    db.Comment.findOne({ _id: req.params.id })
+        .then(function (dbArticle) {
+            res.json(dbArticle);
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+});
 
 //start express server
 app.listen(PORT, function () {
