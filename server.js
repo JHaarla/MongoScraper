@@ -170,7 +170,7 @@ app.post("/deleteone/:id", function (req, res) {
 
 app.get("/articles/:id", function (req, res) {
     db.Article.findOne({ _id: req.params.id })
-    .populate("Comments")
+    .populate("comment")
     .then(function (DBArt) {
         res.json(DBArt);
         // console.log( "wha: " + DBArt);
@@ -182,10 +182,12 @@ app.get("/articles/:id", function (req, res) {
 
 app.post("/arts/:id", function (req, res) {
     console.log("test: " + req.body);
+    console.log("test: " + req);
     db.Comment.create(req.body)
-    .then(function (dbComment) {
-        // console.log("dbComment: " + dbComment);
-        return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { comment: dbComment._id } }, { new: true });
+    .then(function (DBCom) {
+        // console.log("DBCom: " + DBCom);
+        // return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { comment: DBCom._id } }, { new: true });
+        return db.Article.findOneAndUpdate({ _id: req.params.id }, { comment: DBCom._id }, { new: true });
     })
     // .then(function (dbArticle) {
     //     res.json(dbArticle);
