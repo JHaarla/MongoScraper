@@ -30,6 +30,8 @@ $(".delete-btn").on("click", function (id) {
 
 $(document).on("click", ".comment-btn", function() {
     //empty the comment field
+    $("#bodyinput").val("");
+
     const thisID = $(this).attr("data-id");
 
     //axios call to get article
@@ -54,18 +56,22 @@ $(document).on("click", ".comment-btn", function() {
         console.log(data.data._id);
         $(".modal-footer").prepend("<button type='button' class='btn btn-primary btn-sm' id='save-comment-btn' data-dismiss='modal' data-id='" + data.data._id + "'>Save Comment</button>");
     });
-
+    $("#save-comment-btn").remove();
 }); 
 
 $(document).on("click", "#save-comment-btn", function() {
     const id = $(this).attr("data-id");
     console.log(id);
-    $.ajax({
-        method: "post",
-        url: "/articles/" + id,
+    console.log("bodyinput: " + $("#bodyinput").val());
+    axios({
+        method: "POST",
+        url: "/arts/" + id,
         data: {
             body: $("#bodyinput").val()
         }
-    })
-    // $("#bodyinput").empty();
-})
+    });
+    // .then(function(dummy){
+
+    // });
+
+});

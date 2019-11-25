@@ -216,9 +216,10 @@ app.get("/articles/:id", function (req, res) {
     });
 });
 
-app.post("/articles/:id", function (req, res) {
-    console.log("test: " + req.body);
-    db.Comment.create(req.body)
+app.post("/arts/:id", function (req, res) {
+    // console.log("test: " + req.json(body));
+    db.Comment.create(req.data.body)
+    console.log("test: " + req.data.body)
     .then(function (dbComment) {
         console.log("dbComment: " + dbComment);
         return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { comment: dbComment._id } }, { new: true });
