@@ -48,7 +48,7 @@ $(document).on("click", ".comment-btn", function() {
                 url: "/comments/" + id
             })
             .then(function(data){
-                $(".comment-container").append("<li class='list-group-item comment'>" + data.body + "</li> <button class='btn btn-danger btn-sm delete-comment' data-id='" + data._id + "'>Delete</button> </td> </tr>")
+                $(".comment-container").append("<li class='list-group-item comment'>" + data.data.body + "</li> <button class='btn btn-danger btn-sm delete-comment' data-id='" + data.data._id + "'>Delete</button> </td> </tr>")
             });
         }
         console.log(data.data._id);
@@ -69,10 +69,7 @@ $(document).on("click", "#save-comment-btn", function() {
             body: $("#bodyinput").val()
         }
     })
-    // .then(function(dummy){
-
-    // })
-    // .catch(function(err){
-    //     res.json(err);
-    // })
+    .then(function(data){
+        console.log(data);
+    })
 });

@@ -173,6 +173,7 @@ app.get("/articles/:id", function (req, res) {
     .populate("Comments")
     .then(function (DBArt) {
         res.json(DBArt);
+        // console.log( "wha: " + DBArt);
     })
     .catch(function(err){
         res.json(err);
@@ -193,6 +194,8 @@ app.post("/arts/:id", function (req, res) {
         res.json(err);
     });
 });
+
+//comments route here
 
 //start express server
 app.listen(PORT, function () {
