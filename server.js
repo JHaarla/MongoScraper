@@ -216,8 +216,22 @@ app.get("/articles/:id", function (req, res) {
     });
 });
 
+app.post("/articles/:id", function (req, res) {
+    console.log("test: " + req.body);
+    db.Comment.create(req.body)
+    .then(function (dbComment) {
+        console.log("dbComment: " + dbComment);
+        return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { comment: dbComment._id } }, { new: true });
+    })
+    .then(function (dbArticle) {
 
+        res.json(dbArticle);
+    })
+    .catch(function (err) {
 
+        res.json(err);
+    });
+});
 
 //start express server
 app.listen(PORT, function () {
