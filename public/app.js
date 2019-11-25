@@ -51,7 +51,7 @@ $(document).on("click", ".comment-btn", function() {
             })
             .then(function(data){
                 $(".comment-container").append("<li class='list-group-item comment'>" + data.body + "</li> <button class='btn btn-danger btn-sm delete-comment' data-id='" + data._id + "'>Delete</button> </td> </tr>")
-            })
+            });
         }
         console.log(data.data._id);
         $(".modal-footer").prepend("<button type='button' class='btn btn-primary btn-sm' id='save-comment-btn' data-dismiss='modal' data-id='" + data.data._id + "'>Save Comment</button>");
@@ -63,15 +63,18 @@ $(document).on("click", "#save-comment-btn", function() {
     const id = $(this).attr("data-id");
     console.log(id);
     console.log("bodyinput: " + $("#bodyinput").val());
+
     axios({
         method: "POST",
         url: "/arts/" + id,
         data: {
             body: $("#bodyinput").val()
         }
-    });
+    })
     // .then(function(dummy){
 
-    // });
-
+    // })
+    // .catch(function(err){
+    //     res.json(err);
+    // })
 });

@@ -47,8 +47,6 @@ app.get("/", function (err, result) {
 // GET route to scrape the site and write to the database
 app.get("/scrape", function (req, res) {
     //grabs the HTML from the specified site
-
-
     axios.get("https://www.theverge.com/").then(function (siteHTML) {
         // load the siteHTML into cheerio, set $ as shorthand for ease of use    
         const $ = cheerio.load(siteHTML.data);
@@ -96,41 +94,6 @@ app.get("/scrape", function (req, res) {
         });
         res.redirect("/");
     })
-
-
-
-
-
-
-
-    // axios.get("https://www.nytimes.com/").then(function (siteHTML) {
-    //     // load the siteHTML into cheerio, set $ as shorthand for ease of use    
-    //     const $ = cheerio.load(siteHTML.data);
-
-    //     $("article a").each(function (i, element) {
-    //         const article = {};
-
-    //         article.title = $(this)
-    //             .children("div").children("h2")
-    //             // .children("span.balancedHeadline")
-    //             .text();
-    //         article.link = "https://www.nytimes.com" + $(this)
-    //             // .children("a")
-    //             .attr("href");
-    //         article.summary = $(this)
-    //         .children("p").text();
-
-    //         //create new article from scraped data with the article object
-    //         db.Article.remove({})
-    //         db.Article.create(article)
-    //         .then(function (DBArticle) {
-    //             console.log(DBArticle);
-    //         }).catch(function (err) {
-    //             console.log(err);
-    //         });
-    //     });
-    //     res.redirect("/");
-    // })
 })
 
 // GET route to retrieve articles from the database 
@@ -217,17 +180,16 @@ app.get("/articles/:id", function (req, res) {
 });
 
 app.post("/arts/:id", function (req, res) {
-    // console.log("test: " + req.json(body));
-    db.Comment.create(req.data.body)
-    console.log("test: " + req.data.body)
+    console.log("test: " + req.body);
+    db.Comment.create(req.body)
     .then(function (dbComment) {
-        console.log("dbComment: " + dbComment);
+        // console.log("dbComment: " + dbComment);
         return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { comment: dbComment._id } }, { new: true });
     })
-    .then(function (dbArticle) {
+    // .then(function (dbArticle) {
 
-        res.json(dbArticle);
-    })
+    //     res.json(dbArticle);
+    // })
     .catch(function (err) {
 
         res.json(err);
