@@ -207,6 +207,7 @@ app.post("/arts/:id", function (req, res) {
         // return db.Article.findOneAndUpdate({ _id: req.params.id }, { comment: DBCom._id }, { new: true });
     })
     .then(function (dbArticle) {
+        console.log(dbArticle);
         res.json(dbArticle);
     })
     .catch(function (err) {

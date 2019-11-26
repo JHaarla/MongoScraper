@@ -29,7 +29,7 @@ $(".delete-btn").on("click", function (id) {
 $(document).on("click", ".comment-btn", function() {
     //empty the comment field
     $("#bodyinput").val("");
-
+    $(".comment-container"). empty();
     const thisID = $(this).attr("data-id");
 
     //axios call to get article
@@ -42,14 +42,15 @@ $(document).on("click", ".comment-btn", function() {
         const data = res.data;
         console.log(data.title);
         for (i = 0; i < data.comment.length; i++) {
-            const id = data.comment[i];
-            console.log("ID: " + id);
+            const id = data.comment[i]._id;
+            console.log(id);
             axios({
                 method: "get",
                 url: "/comments/" + id
             })
             .then(function(data){
-                $(".comment-container").append("<li class='list-group-item comment'>" + data.body + "</li> <button class='btn btn-danger btn-sm delete-comment' data-id='" + data._id + "'>Delete</button> </td> </tr>")
+                console.log(data);
+                $(".comment-container").append("<li class='list-group-item comment'>" + data.data.comment + "</li> <button class='btn btn-danger btn-sm delete-comment' data-id='" + data.data._id + "'>Delete</button> </td> </tr>")
             });
         }
         console.log(data._id);
