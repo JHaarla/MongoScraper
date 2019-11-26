@@ -1,10 +1,18 @@
 const mongoose = require("mongoose");
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
 const logger = require("morgan");
 const exphbs = require("express-handlebars");
 //express server setup/init
 const express = require("express");
 const app = express();
 const PORT = 5000;
+
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 
 //set public folder as public root
 app.use(express.static("public"));
@@ -20,7 +28,7 @@ const db = require("./models");
 app.use(logger("dev"));
 
 // connect to the Mongo DB
-mongoose.connect("mongodb://localhost/MongoScraper", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/MongoScraper", { useNewUrlParser: true, useUnifiedTopology: true });
 
 //handlebars setup
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
@@ -181,8 +189,8 @@ app.get("/articles/:id", function (req, res) {
 });
 
 app.post("/arts/:id", function (req, res) {
-    console.log("test: " + req.body);
-    console.log("test: " + req);
+    console.log(req.body);
+    // console.log("test: " + req);
     db.Comment.create(req.body)
     .then(function (DBCom) {
         // console.log("DBCom: " + DBCom);
