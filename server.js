@@ -129,6 +129,13 @@ app.get("/clear-everything", function (req, res) {
             console.log("removed all articles");
         }
     });
+    db.Comment.remove({}, function(err, doc) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Removed all comments");
+        }
+    })
     res.redirect("/");
 });
 
@@ -189,11 +196,13 @@ app.get("/articles/:id", function (req, res) {
 });
 
 app.post("/arts/:id", function (req, res) {
-    console.log(req.body);
+    const comment = req.body;
+
+    console.log("Comment: " + JSON.stringify(comment));
     // console.log("test: " + req);
-    db.Comment.create(req.body)
+    db.Comment.create(comment)
     .then(function (DBCom) {
-        // console.log("DBCom: " + DBCom);
+        console.log(DBCom);
         return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { comment: DBCom._id } }, { new: true });
         // return db.Article.findOneAndUpdate({ _id: req.params.id }, { comment: DBCom._id }, { new: true });
     })
