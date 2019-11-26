@@ -226,6 +226,17 @@ app.get("/comments/:id", function (req, res) {
         });
 });
 
+//delete comment route
+app.post("/delete-comment/:id", function (req, res) {
+    console.log(req.params.id);
+    db.Comment.deleteOne({_id: req.params.id})
+    .then(function (dbArts) {
+        res.render("saved",{
+            articles: dbArts
+        })
+    });
+})
+
 //start express server
 app.listen(PORT, function () {
     console.log("Listening on: http://localhost:" + PORT)
