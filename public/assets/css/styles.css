@@ -61,3 +61,7 @@ background-color: rgba(0, 0, 0, 0.7);
 textarea {
     width: 100%;
 }
+
+.delete-comment {
+    display: inline-block;
+}
