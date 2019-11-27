@@ -66,6 +66,9 @@ $(document).on("click", "#save-comment-btn", function() {
     console.log("bodyinput: " + $("#bodyinput").val());
     var comment = $("#bodyinput").val();
     console.log(comment);
+
+    if (comment.length !== 0) {
+
     // $.ajax({
     axios({
         method: "POST",
@@ -78,6 +81,9 @@ $(document).on("click", "#save-comment-btn", function() {
     .then(function(data){
         console.log(data);
     })
+} else {
+    alert("Please enter your comment. No need to save a blank comment...");
+}
 });
 
 $(document).on("click", ".delete-comment", function(delCom){
