@@ -7,7 +7,7 @@ const exphbs = require("express-handlebars");
 //express server setup/init
 const express = require("express");
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -239,5 +239,5 @@ app.post("/delete-comment/:id", function (req, res) {
 
 //start express server
 app.listen(PORT, function () {
-    console.log("Listening on: http://localhost:" + PORT)
+    console.log("Listening on: + PORT)
 })
