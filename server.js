@@ -27,8 +27,10 @@ const db = require("./models");
 // use morgan logger for logging requests
 app.use(logger("dev"));
 
-// connect to the Mongo DB
-mongoose.connect("mongodb://localhost/MongoScraper", { useNewUrlParser: true, useUnifiedTopology: true });
+// if deployed, use the deployed db - otherwise use the local db
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/MongoScraper";
+mongoose.connect(MONGODB_URI);
+// mongoose.connect("mongodb://localhost/MongoScraper", { useNewUrlParser: true, useUnifiedTopology: true });
 
 //handlebars setup
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
@@ -239,5 +241,5 @@ app.post("/delete-comment/:id", function (req, res) {
 
 //start express server
 app.listen(PORT, function () {
-    console.log("Listening on: + PORT)
+    console.log("Listening on: " + PORT)
 })

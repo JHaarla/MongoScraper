@@ -50,7 +50,7 @@ $(document).on("click", ".comment-btn", function() {
             })
             .then(function(data){
                 console.log(data);
-                $(".comment-container").append("<li class='list-group-item comment'>" + data.data.comment + " <button class='btn btn-danger btn-sm delete-comment float-right' data-id='" + data.data._id + ">Delete</button></li>")
+                $(".comment-container").append("<li class='list-group-item comment'>" + data.data.comment + " <button class='btn btn-danger btn-sm delete-comment float-right' data-dismiss='modal' data-id='" + data.data._id + "'>Delete</button></li>")
             });
         }
         console.log(data._id);
