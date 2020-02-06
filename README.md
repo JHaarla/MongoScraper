@@ -24,4 +24,4 @@ Check out the live Heroku deployment:
 [Mongo Scraper](https://protected-wildwood-32999.herokuapp.com/)
 
 ___
-All code written by Jarkko Haarla - UNCC full stack coding bootcamp assignment
+All code written by Jarkko Haarla 
